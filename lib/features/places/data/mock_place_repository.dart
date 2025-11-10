@@ -1,9 +1,8 @@
-import 'dart:async';
 import 'place.dart';
 import 'place_repository.dart';
 
 class MockPlaceRepository implements PlaceRepository {
-  final _data = <Place>[
+  final List<Place> _data = <Place>[
     const Place(
       id: '1',
       name: 'Registan',
@@ -38,13 +37,13 @@ class MockPlaceRepository implements PlaceRepository {
 
   @override
   Future<List<Place>> getPopularPlaces() async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
     return _data;
   }
 
   @override
   Future<Place?> getPlaceById(String id) async {
-    await Future.delayed(const Duration(milliseconds: 150));
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     return _data.firstWhere((p) => p.id == id, orElse: () => _data.first);
   }
 }

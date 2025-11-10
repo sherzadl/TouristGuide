@@ -11,7 +11,7 @@ class PlaceListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final repo = ref.watch(placeRepositoryProvider);
+    final PlaceRepository repo = ref.watch(placeRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Popular Places')),
@@ -26,7 +26,11 @@ class PlaceListScreen extends ConsumerWidget {
             itemCount: places.length,
             itemBuilder: (_, i) => PlaceCard(
               place: places[i],
-              onTap: () => context.goNamed('placeDetail', pathParameters: {'id': places[i].id}, extra: places[i]),
+              onTap: () => context.goNamed(
+                'placeDetail',
+                pathParameters: {'id': places[i].id},
+                extra: places[i],
+              ),
             ),
           );
         },

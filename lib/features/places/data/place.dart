@@ -4,7 +4,7 @@ class Place {
   final String city;
   final String country;
   final String description;
-  final double rating; // 0..5
+  final double rating;
   final String imageUrl;
   final double? lat;
   final double? lng;
