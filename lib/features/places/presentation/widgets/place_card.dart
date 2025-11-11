@@ -15,8 +15,20 @@ class PlaceCard extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 120, height: 90,
-              child: CachedNetworkImage(imageUrl: place.imageUrl, fit: BoxFit.cover),
+              width: 120,
+              height: 90,
+              child: CachedNetworkImage(
+                imageUrl: place.imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (_, __) => const Center(
+                  child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                ),
+                errorWidget: (_, __, ___) => Container(
+                  color: Colors.black12,
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.image_not_supported_outlined),
+                ),
+              ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -25,16 +37,23 @@ class PlaceCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(place.name, style: Theme.of(context).textTheme.titleMedium,
-                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(
+                      place.name,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
                         const Icon(Icons.location_on_outlined, size: 16),
                         const SizedBox(width: 4),
                         Expanded(
-                          child: Text('${place.city}, ${place.country}',
-                              maxLines: 1, overflow: TextOverflow.ellipsis),
+                          child: Text(
+                            '${place.city}, ${place.country}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         const Icon(Icons.star, size: 16),

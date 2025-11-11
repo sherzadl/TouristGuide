@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../data/region.dart';
 
 class RegionsDashboardScreen extends StatelessWidget {
@@ -19,36 +20,58 @@ class RegionsDashboardScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          // HERO
           Padding(
             padding: const EdgeInsets.all(16),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Stack(
                 children: [
-                  Image.network(
-                    'https://images.unsplash.com/photo-1582623690729-6c8f1e803c05?q=80&w=1600&auto=format&fit=crop',
-                    height: 180, width: double.infinity, fit: BoxFit.cover,
+                  CachedNetworkImage(
+                    imageUrl: 'https://picsum.photos/seed/uz-hero/1600/900',
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) => const SizedBox(
+                      height: 180,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                    errorWidget: (_, __, ___) => Container(
+                      height: 180,
+                      color: Colors.black12,
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.image_not_supported_outlined, size: 36),
+                    ),
                   ),
                   Positioned.fill(
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment.bottomCenter, end: Alignment.center,
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.center,
                           colors: [Colors.black.withOpacity(.55), Colors.transparent],
                         ),
                       ),
                     ),
                   ),
                   Positioned(
-                    left: 16, bottom: 16, right: 16,
-                    child: Text('Free Your Journey',
-                        style: t.headlineSmall?.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.w800)),
+                    left: 16,
+                    bottom: 16,
+                    right: 16,
+                    child: Text(
+                      'Free Your Journey',
+                      style: t.headlineSmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
+
+          // SEARCH
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
@@ -68,12 +91,18 @@ class RegionsDashboardScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
+
+          // TITLE
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Popular Destinations',
-                style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
+            child: Text(
+              'Popular Destinations',
+              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+            ),
           ),
           const SizedBox(height: 8),
+
+          // REGION GRID
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: _RegionGrid(),
@@ -93,7 +122,11 @@ class _RegionGrid extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: .95),
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: .95,
+      ),
       itemBuilder: (_, i) => _RegionCard(region: regions[i]),
     );
   }
@@ -105,8 +138,7 @@ class _RegionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = region.image ??
-        'https://images.unsplash.com/photo-1595436252086-796adb0f34a1?q=80&w=1200&auto=format&fit=crop';
+    final img = region.image ?? 'https://picsum.photos/seed/${region.id}/800/600';
 
     return Card(
       elevation: 1.5,
@@ -117,9 +149,22 @@ class _RegionCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(img, fit: BoxFit.cover),
+            CachedNetworkImage(
+              imageUrl: img,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => const Center(
+                child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator()),
+              ),
+              errorWidget: (_, __, ___) => Container(
+                color: Colors.black12,
+                alignment: Alignment.center,
+                child: const Icon(Icons.image_not_supported_outlined),
+              ),
+            ),
             Positioned(
-              bottom: 10, left: 10, right: 10,
+              bottom: 10,
+              left: 10,
+              right: 10,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(.45),
@@ -127,16 +172,19 @@ class _RegionCard extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 child: Row(
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text(
-                        // use region.name
-                        '',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                        region.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white),
+                    const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white),
                   ],
                 ),
               ),

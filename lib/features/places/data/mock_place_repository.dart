@@ -1,4 +1,3 @@
-// lib/features/places/data/mock_place_repository.dart
 import 'place.dart';
 import 'place_repository.dart';
 
@@ -11,7 +10,8 @@ class MockPlaceRepository implements PlaceRepository {
       country: 'Uzbekistan',
       description: 'Historic square framed by three madrasahs with stunning mosaics.',
       rating: 4.9,
-      imageUrl: 'https://images.unsplash.com/photo-1582623690729-6c8f1e803c05?q=80&w=1200&auto=format&fit=crop',
+      // Stable image (always returns 200)
+      imageUrl: 'https://picsum.photos/seed/registan/1200/800',
       lat: 39.6542, lng: 66.9750,
       regionId: 'samarkand',
     ),
@@ -22,9 +22,9 @@ class MockPlaceRepository implements PlaceRepository {
       country: 'Uzbekistan',
       description: 'Walled inner town with minarets and narrow lanes—UNESCO site.',
       rating: 4.8,
-      imageUrl: 'https://images.unsplash.com/photo-1606761568499-6b2fe8a3c6f5?q=80&w=1200&auto=format&fit=crop',
+      imageUrl: 'https://picsum.photos/seed/itchankala/1200/800',
       lat: 41.3790, lng: 60.3609,
-      regionId: 'karakalpakstan', // adjust later if you prefer Khorezm
+      regionId: 'karakalpakstan', // adjust later if needed
     ),
     const Place(
       id: '3',
@@ -33,7 +33,7 @@ class MockPlaceRepository implements PlaceRepository {
       country: 'Uzbekistan',
       description: 'Ancient fortress, residence of emirs, with museum exhibits.',
       rating: 4.7,
-      imageUrl: 'https://images.unsplash.com/photo-1595436252086-796adb0f34a1?q=80&w=1200&auto=format&fit=crop',
+      imageUrl: 'https://picsum.photos/seed/ark/1200/800',
       lat: 39.7772, lng: 64.4158,
       regionId: 'bukhara',
     ),
@@ -55,7 +55,6 @@ class MockPlaceRepository implements PlaceRepository {
     }
   }
 
-  // Helper used by RegionPlacesScreen
   Future<List<Place>> getPlacesByRegion(String regionId) async {
     await Future<void>.delayed(const Duration(milliseconds: 150));
     return _data.where((p) => p.regionId == regionId).toList();

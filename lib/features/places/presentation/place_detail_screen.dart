@@ -15,11 +15,21 @@ class PlaceDetailScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (place != null)
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: CachedNetworkImage(imageUrl: place.imageUrl, fit: BoxFit.cover),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: CachedNetworkImage(
+              imageUrl: place?.imageUrl ?? '',
+              fit: BoxFit.cover,
+              placeholder: (_, __) => const Center(
+                child: SizedBox(width: 28, height: 28, child: CircularProgressIndicator()),
+              ),
+              errorWidget: (_, __, ___) => Container(
+                color: Colors.black12,
+                alignment: Alignment.center,
+                child: const Icon(Icons.image_not_supported_outlined),
+              ),
             ),
+          ),
           const SizedBox(height: 16),
           if (place != null) ...[
             Text(place.name, style: Theme.of(context).textTheme.headlineSmall),
@@ -37,6 +47,16 @@ class PlaceDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(place.description),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Map coming soon…')),
+                );
+              },
+              icon: const Icon(Icons.map_outlined),
+              label: const Text('View on Map'),
+            ),
           ],
         ],
       ),
