@@ -1,3 +1,4 @@
+// lib/features/places/data/place.dart
 class Place {
   final String id;
   final String name;
@@ -8,6 +9,7 @@ class Place {
   final String imageUrl;
   final double? lat;
   final double? lng;
+  final String regionId; // required for region filtering
 
   const Place({
     required this.id,
@@ -19,5 +21,6 @@ class Place {
     required this.imageUrl,
     this.lat,
     this.lng,
+    required this.regionId,
   });
 }

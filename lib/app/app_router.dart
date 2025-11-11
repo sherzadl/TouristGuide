@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../features/places/presentation/home_screen.dart';
+
+import '../features/splash/presentation/splash_screen.dart';
+import '../features/regions/presentation/regions_dashboard_screen.dart';
+import '../features/regions/presentation/region_places_screen.dart';
+
 import '../features/places/presentation/place_list_screen.dart';
 import '../features/places/presentation/place_detail_screen.dart';
-import '../features/places/presentation/map_screen.dart';
 import '../features/places/presentation/favorites_screen.dart';
+import '../features/places/presentation/map_screen.dart';      // will be "Nearby"
 import '../features/places/data/place.dart';
+import '../features/places/presentation/bookings_screen.dart'; // we'll add this file below
 
-class _ScaffoldWithNav extends StatelessWidget {
+class _ScaffoldWithTabs extends StatelessWidget {
   final Widget child;
-  const _ScaffoldWithNav({required this.child});
+  const _ScaffoldWithTabs({required this.child});
 
   static const _tabs = [
-    _NavItem(label: 'Home', icon: Icons.home_outlined, route: '/'),
-    _NavItem(label: 'Explore', icon: Icons.travel_explore, route: '/explore'),
-    _NavItem(label: 'Map', icon: Icons.map_outlined, route: '/map'),
-    _NavItem(label: 'Favorites', icon: Icons.favorite_border, route: '/favorites'),
+    _Tab(icon: Icons.travel_explore, label: 'Places', route: '/explore'),
+    _Tab(icon: Icons.favorite_border, label: 'Favorites', route: '/favorites'),
+    _Tab(icon: Icons.near_me, label: 'Nearby', route: '/nearby'),
+    _Tab(icon: Icons.calendar_month, label: 'Bookings', route: '/bookings'),
   ];
 
   int _indexFromLocation(BuildContext context) {
     final loc = GoRouterState.of(context).uri.toString();
-    if (loc.startsWith('/explore')) return 1;
-    if (loc.startsWith('/map')) return 2;
-    if (loc.startsWith('/favorites')) return 3;
+    if (loc.startsWith('/favorites')) return 1;
+    if (loc.startsWith('/nearby')) return 2;
+    if (loc.startsWith('/bookings')) return 3;
     return 0;
   }
 
@@ -35,65 +40,89 @@ class _ScaffoldWithNav extends StatelessWidget {
         selectedIndex: idx,
         onDestinationSelected: (i) => context.go(_tabs[i].route),
         destinations: [
-          for (final t in _tabs)
-            NavigationDestination(icon: Icon(t.icon), label: t.label),
+          for (final t in _tabs) NavigationDestination(icon: Icon(t.icon), label: t.label),
         ],
       ),
     );
   }
 }
 
-class _NavItem {
-  final String label;
+class _Tab {
   final IconData icon;
+  final String label;
   final String route;
-  const _NavItem({required this.label, required this.icon, required this.route});
+  const _Tab({required this.icon, required this.label, required this.route});
 }
 
 final router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/splash',
   routes: [
-    ShellRoute(
-      builder: (context, state, child) => _ScaffoldWithNav(child: child),
+    GoRoute(
+      path: '/splash',
+      name: 'splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
+
+    // Dashboard (regions) lives outside the Shell so it's the "home" when app opens
+    GoRoute(
+      path: '/',
+      name: 'dashboard',
+      builder: (context, state) => const RegionsDashboardScreen(),
       routes: [
         GoRoute(
-          path: '/',
-          name: 'home',
-          pageBuilder: (context, state) =>
-          const NoTransitionPage(child: HomeScreen()),
-        ),
-        GoRoute(
-          path: '/explore',
-          name: 'places',
-          pageBuilder: (context, state) =>
-          const NoTransitionPage(child: PlaceListScreen()),
+          path: 'region/:regionId',
+          name: 'regionPlaces',
+          builder: (context, state) {
+            final regionId = state.pathParameters['regionId']!;
+            return RegionPlacesScreen(regionId: regionId);
+          },
           routes: [
             GoRoute(
-              path: ':id',
+              path: 'place/:id',
               name: 'placeDetail',
               builder: (context, state) {
-                final place = state.extra as Place?;
                 final id = state.pathParameters['id']!;
+                final place = state.extra as Place?;
                 return PlaceDetailScreen(placeId: id, initialPlace: place);
               },
             ),
           ],
         ),
+      ],
+    ),
+
+    // Shell with bottom tabs
+    ShellRoute(
+      builder: (context, state, child) => _ScaffoldWithTabs(child: child),
+      routes: [
+        // Places tab (reuse your list)
         GoRoute(
-          path: '/map',
-          name: 'map',
-          pageBuilder: (context, state) =>
-          const NoTransitionPage(child: MapScreen()),
+          path: '/explore',
+          name: 'places',
+          pageBuilder: (context, state) => const NoTransitionPage(child: PlaceListScreen()),
         ),
+        // Favorites tab
         GoRoute(
           path: '/favorites',
           name: 'favorites',
-          pageBuilder: (context, state) =>
-          const NoTransitionPage(child: FavoritesScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(child: FavoritesScreen()),
+        ),
+        // Nearby tab (use MapScreen)
+        GoRoute(
+          path: '/nearby',
+          name: 'nearby',
+          pageBuilder: (context, state) => const NoTransitionPage(child: MapScreen()),
+        ),
+        // Bookings tab (placeholder screen we add below)
+        GoRoute(
+          path: '/bookings',
+          name: 'bookings',
+          pageBuilder: (context, state) => const NoTransitionPage(child: BookingsScreen()),
         ),
       ],
     ),
   ],
-  errorBuilder: (context, state) =>
-      Scaffold(body: Center(child: Text('Route error: ${state.error}'))),
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(child: Text('Route error: ${state.error}')),
+  ),
 );
