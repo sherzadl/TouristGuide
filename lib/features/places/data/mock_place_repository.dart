@@ -10,7 +10,6 @@ class MockPlaceRepository implements PlaceRepository {
       country: 'Uzbekistan',
       description: 'Historic square framed by three madrasahs with stunning mosaics.',
       rating: 4.9,
-      // Stable image (always returns 200)
       imageUrl: 'https://picsum.photos/seed/registan/1200/800',
       lat: 39.6542, lng: 66.9750,
       regionId: 'samarkand',
@@ -24,7 +23,7 @@ class MockPlaceRepository implements PlaceRepository {
       rating: 4.8,
       imageUrl: 'https://picsum.photos/seed/itchankala/1200/800',
       lat: 41.3790, lng: 60.3609,
-      regionId: 'karakalpakstan', // adjust later if needed
+      regionId: 'karakalpakstan',
     ),
     const Place(
       id: '3',

@@ -14,6 +14,7 @@ class RegionPlacesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.watch(placeRepositoryProvider) as MockPlaceRepository;
+    final favIds = ref.watch(favoritesProvider);
     final regionName = regions.firstWhere((r) => r.id == regionId).name;
 
     return Scaffold(
@@ -34,10 +35,16 @@ class RegionPlacesScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(8),
             itemCount: places.length,
-            itemBuilder: (_, i) => PlaceCard(
-              place: places[i],
-              onTap: () => context.go('/region/$regionId/place/${places[i].id}', extra: places[i]),
-            ),
+            itemBuilder: (_, i) {
+              final p = places[i];
+              final isFav = favIds.contains(p.id);
+              return PlaceCard(
+                place: p,
+                isFavorite: isFav,
+                onFavoriteToggle: () => ref.read(favoritesProvider.notifier).toggle(p.id),
+                onTap: () => context.go('/places/region/$regionId/place/${p.id}', extra: p),
+              );
+            },
             separatorBuilder: (_, __) => const SizedBox(height: 8),
           );
         },

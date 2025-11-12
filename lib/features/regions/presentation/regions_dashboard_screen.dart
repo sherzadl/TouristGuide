@@ -12,73 +12,28 @@ class RegionsDashboardScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDFCF9),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black87,
-        title: const Text('Uzbekistan Tourist Guide'),
-      ),
       body: ListView(
         children: [
-          // HERO
+          const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.all(16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Stack(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: 'https://picsum.photos/seed/uz-hero/1600/900',
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (_, __) => const SizedBox(
-                      height: 180,
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                    errorWidget: (_, __, ___) => Container(
-                      height: 180,
-                      color: Colors.black12,
-                      alignment: Alignment.center,
-                      child: const Icon(Icons.image_not_supported_outlined, size: 36),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.center,
-                          colors: [Colors.black.withOpacity(.55), Colors.transparent],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16,
-                    bottom: 16,
-                    right: 16,
-                    child: Text(
-                      'Free Your Journey',
-                      style: t.headlineSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text('Explore cities, cultures, and stories',
+                style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            child: Text(
+              '“Popular destinations await across Uzbekistan.”',
+              style: t.bodyMedium?.copyWith(color: Colors.black54),
             ),
           ),
-
-          // SEARCH
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               readOnly: true,
-              onTap: () => context.go('/explore'),
+              onTap: () => context.go('/places'), // later to search page
               decoration: InputDecoration(
-                hintText: 'Explore cities, places, and tours',
+                hintText: 'Search cities, places…',
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
                 fillColor: Colors.white,
@@ -90,23 +45,25 @@ class RegionsDashboardScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
 
-          // TITLE
+          // “Popular Destinations” title + quote
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text('Popular Destinations',
+                style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: Text(
-              'Popular Destinations',
-              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+              'Pick a region to discover places and history.',
+              style: t.bodyMedium?.copyWith(color: Colors.black54),
             ),
           ),
-          const SizedBox(height: 8),
 
-          // REGION GRID
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: _RegionGrid(),
-          ),
+          // VERTICAL list of regions (stacked)
+          const SizedBox(height: 6),
+          for (final r in regions) _RegionTile(region: r),
           const SizedBox(height: 20),
         ],
       ),
@@ -114,63 +71,47 @@ class RegionsDashboardScreen extends StatelessWidget {
   }
 }
 
-class _RegionGrid extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: regions.length,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: .95,
-      ),
-      itemBuilder: (_, i) => _RegionCard(region: regions[i]),
-    );
-  }
-}
-
-class _RegionCard extends StatelessWidget {
+class _RegionTile extends StatelessWidget {
   final Region region;
-  const _RegionCard({required this.region});
+  const _RegionTile({required this.region});
 
   @override
   Widget build(BuildContext context) {
-    final img = region.image ?? 'https://picsum.photos/seed/${region.id}/800/600';
-
-    return Card(
-      elevation: 1.5,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+    final img = region.image ?? 'https://picsum.photos/seed/${region.id}/1200/800';
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
-        onTap: () => context.go('/region/${region.id}'),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CachedNetworkImage(
-              imageUrl: img,
-              fit: BoxFit.cover,
-              placeholder: (_, __) => const Center(
-                child: SizedBox(width: 24, height: 24, child: CircularProgressIndicator()),
-              ),
-              errorWidget: (_, __, ___) => Container(
-                color: Colors.black12,
-                alignment: Alignment.center,
-                child: const Icon(Icons.image_not_supported_outlined),
-              ),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(.45),
-                  borderRadius: BorderRadius.circular(16),
+        onTap: () => context.go('/places/region/${region.id}'),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: Stack(
+            alignment: Alignment.bottomLeft,
+            children: [
+              CachedNetworkImage(
+                imageUrl: img,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                placeholder: (_, __) => const SizedBox(
+                    height: 200, child: Center(child: CircularProgressIndicator())),
+                errorWidget: (_, __, ___) => Container(
+                  height: 200,
+                  color: Colors.black12,
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.image_not_supported_outlined),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              ),
+              Container(
+                height: 200,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter, end: Alignment.center,
+                    colors: [Colors.black54, Colors.transparent],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(14),
                 child: Row(
                   children: [
                     Expanded(
@@ -178,18 +119,17 @@ class _RegionCard extends StatelessWidget {
                         region.name,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white),
+                    const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.white),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

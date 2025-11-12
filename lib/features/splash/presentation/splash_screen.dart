@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(milliseconds: 1600), () {
-      if (mounted) context.go('/'); // go to dashboard
+      if (mounted) context.go('/places'); // go to Places tab (dashboard)
     });
   }
 
@@ -29,8 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Prefer SVG for sharpness; if you don't have it yet, use the PNG line below
-              // SvgPicture.asset('assets/svg/logo.svg', width: 140),
               Image.asset('assets/branding/logo_1024.png', width: 140, height: 140),
               const SizedBox(height: 16),
               Text('UZBEKISTAN', style: t.headlineSmall?.copyWith(
