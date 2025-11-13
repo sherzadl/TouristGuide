@@ -22,6 +22,8 @@ class CategoryPlacesScreen extends ConsumerWidget {
         return 'Museums';
       case 'parks':
         return 'Parks';
+      case 'mountains':
+        return 'Mountains';       // 👈 add this
       case 'markets':
         return 'Local Markets';
       case 'theatres':
@@ -30,6 +32,7 @@ class CategoryPlacesScreen extends ConsumerWidget {
         return id;
     }
   }
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
