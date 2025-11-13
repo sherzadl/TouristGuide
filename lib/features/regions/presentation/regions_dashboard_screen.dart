@@ -1,73 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 import '../data/region.dart';
+import '../../places/data/place.dart';
+import '../../places/presentation/place_search_delegate.dart';
 
 class RegionsDashboardScreen extends StatelessWidget {
   const RegionsDashboardScreen({super.key});
+
+  Future<void> _openSearch(BuildContext context) async {
+    final result = await showSearch<Place?>(
+      context: context,
+      delegate: PlaceSearchDelegate(),
+    );
+
+    if (result != null && context.mounted) {
+      context.go(
+        '/places/region/${result.regionId}/place/${result.id}',
+        extra: result,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFCF9),
-      body: ListView(
-        children: [
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              'Explore cities, cultures, and stories',
-              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: Text(
-              '“Popular destinations await across Uzbekistan.”',
-              style: t.bodyMedium?.copyWith(color: Colors.black54),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: TextField(
-              readOnly: true,
-              onTap: () => context.go('/places'),
-              decoration: InputDecoration(
-                hintText: 'Search cities, places…',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(28),
-                  borderSide: BorderSide.none,
+      // background comes from global theme
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          children: [
+            // ---------- HEADER ----------
+            Column(
+              children: [
+                Text(
+                  'Explore Uzbekistan',
+                  style: t.titleLarge?.copyWith(
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                const SizedBox(height: 6),
+                Text(
+                  'Find history, culture and nature\nin every region of the country.',
+                  style: t.bodyMedium?.copyWith(
+                    color: Colors.black54,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            // ---------- SEARCH BAR ----------
+            GestureDetector(
+              onTap: () => _openSearch(context),
+              child: AbsorbPointer(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search places by name',
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(28),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 0,
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 14),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
+            const SizedBox(height: 24),
+
+            // ---------- SECTION TITLE ----------
+            Text(
               'Popular Destinations',
-              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+              style: t.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: Text(
-              'Pick a region to discover places and history.',
+            const SizedBox(height: 6),
+            Text(
+              'Choose a region to see the main sights, maps and travel tips.',
               style: t.bodyMedium?.copyWith(color: Colors.black54),
+              textAlign: TextAlign.center,
             ),
-          ),
+            const SizedBox(height: 16),
 
-          const SizedBox(height: 6),
-          for (final r in regions) _RegionTile(region: r),
-          const SizedBox(height: 20),
-        ],
+            // ---------- REGIONS LIST ----------
+            for (final r in regions) _RegionTile(region: r),
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }
@@ -80,17 +116,20 @@ class _RegionTile extends StatelessWidget {
   Widget _buildBackgroundImage() {
     final img = region.image;
 
-    // If no image specified → fallback
     if (img == null || img.isEmpty) {
       return Container(
+        height: 200,
         color: Colors.grey.shade300,
         child: const Center(
-          child: Icon(Icons.landscape_outlined, size: 40, color: Colors.black45),
+          child: Icon(
+            Icons.landscape_outlined,
+            size: 40,
+            color: Colors.black45,
+          ),
         ),
       );
     }
 
-    // If it's an asset path
     if (img.startsWith('assets/')) {
       return Image.asset(
         img,
@@ -100,29 +139,19 @@ class _RegionTile extends StatelessWidget {
       );
     }
 
-    // Otherwise treat as network URL
-    return CachedNetworkImage(
-      imageUrl: img,
+    // Fallback – should not really happen now.
+    return Image.asset(
+      img,
       height: 200,
       width: double.infinity,
       fit: BoxFit.cover,
-      placeholder: (_, __) => const SizedBox(
-        height: 200,
-        child: Center(child: CircularProgressIndicator()),
-      ),
-      errorWidget: (_, __, ___) => Container(
-        height: 200,
-        color: Colors.black12,
-        alignment: Alignment.center,
-        child: const Icon(Icons.image_not_supported_outlined),
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () => context.go('/places/region/${region.id}'),
         borderRadius: BorderRadius.circular(18),
@@ -138,7 +167,10 @@ class _RegionTile extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.center,
-                    colors: [Colors.black54, Colors.transparent],
+                    colors: [
+                      Colors.black54,
+                      Colors.transparent,
+                    ],
                   ),
                 ),
               ),
@@ -156,8 +188,11 @@ class _RegionTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios,
-                        size: 16, color: Colors.white),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16,
+                      color: Colors.white,
+                    ),
                   ],
                 ),
               ),

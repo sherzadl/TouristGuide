@@ -1,39 +1,109 @@
 import 'package:flutter/material.dart';
 
+/// Used by app.dart:
+///   theme: buildLightTheme(GoogleFonts.interTextTheme()),
+///   darkTheme: buildDarkTheme(GoogleFonts.interTextTheme(ThemeData.dark().textTheme)),
 ThemeData buildLightTheme(TextTheme textTheme) {
-  final base = ThemeData(
-    useMaterial3: true,
-    colorSchemeSeed: const Color(0xFF2F7BFF),
+  const surface = Color(0xFFF6F3EB); // soft warm background
+
+  final colorScheme = ColorScheme.fromSeed(
+    seedColor: const Color(0xFF00897B), // teal-ish, close to travel / your logo
     brightness: Brightness.light,
+    background: surface,
+    surface: surface,
   );
-  return base.copyWith(
+
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor: surface,
     textTheme: textTheme,
-    cardTheme: const CardThemeData(
-      margin: EdgeInsets.all(8),
-      elevation: 1,
-      clipBehavior: Clip.antiAlias,
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: surface,
+      foregroundColor: colorScheme.onSurface,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: textTheme.titleLarge?.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
     ),
-    listTileTheme: const ListTileThemeData(
-      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: surface,
+      indicatorColor: colorScheme.primary.withOpacity(0.12),
+      iconTheme: WidgetStateProperty.resolveWith(
+            (states) => IconThemeData(
+          color: states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurface.withOpacity(0.7),
+        ),
+      ),
+      labelTextStyle: WidgetStateProperty.resolveWith(
+            (states) => TextStyle(
+          fontWeight: states.contains(WidgetState.selected)
+              ? FontWeight.w700
+              : FontWeight.w500,
+        ),
+      ),
+    ),
+
+    cardTheme: CardThemeData(
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
     ),
   );
 }
 
 ThemeData buildDarkTheme(TextTheme textTheme) {
-  final base = ThemeData(
-    useMaterial3: true,
-    colorSchemeSeed: const Color(0xFF2F7BFF),
+  final base = ThemeData.dark();
+  final colorScheme = ColorScheme.fromSeed(
+    seedColor: const Color(0xFF00897B),
     brightness: Brightness.dark,
   );
+
   return base.copyWith(
+    useMaterial3: true,
+    colorScheme: colorScheme,
+    scaffoldBackgroundColor: const Color(0xFF101315),
     textTheme: textTheme,
-    cardTheme: const CardThemeData(
-      margin: EdgeInsets.all(8),
-      elevation: 1,
-      clipBehavior: Clip.antiAlias,
+
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF101315),
+      foregroundColor: Colors.white,
+      centerTitle: true,
+      elevation: 0,
     ),
-    listTileTheme: const ListTileThemeData(
-      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: const Color(0xFF101315),
+      indicatorColor: colorScheme.primary.withOpacity(0.3),
+      iconTheme: WidgetStateProperty.resolveWith(
+            (states) => IconThemeData(
+          color: states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : Colors.white70,
+        ),
+      ),
+      labelTextStyle: WidgetStateProperty.resolveWith(
+            (states) => TextStyle(
+          fontWeight: states.contains(WidgetState.selected)
+              ? FontWeight.w700
+              : FontWeight.w500,
+        ),
+      ),
+    ),
+
+    cardTheme: CardThemeData(
+      color: const Color(0xFF1E2427),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
     ),
   );
 }
