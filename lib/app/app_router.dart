@@ -10,13 +10,14 @@ import '../features/places/presentation/favorites_screen.dart';
 import '../features/places/presentation/must_visit_screen.dart';
 import '../features/places/presentation/map_screen.dart';
 import '../features/places/presentation/categories_screen.dart';
+import '../features/places/presentation/category_places_screen.dart';
+
 import '../features/places/data/place.dart';
 
 class _ScaffoldWithTabs extends StatelessWidget {
   final Widget child;
   const _ScaffoldWithTabs({required this.child});
 
-  /// NEW ORDER
   static const _tabs = [
     _Tab(icon: Icons.travel_explore, label: 'Places', route: '/places'),
     _Tab(icon: Icons.category_outlined, label: 'Categories', route: '/categories'),
@@ -27,18 +28,16 @@ class _ScaffoldWithTabs extends StatelessWidget {
 
   int _indexFromLocation(BuildContext context) {
     final loc = GoRouterState.of(context).uri.toString();
-
     if (loc.startsWith('/categories')) return 1;
     if (loc.startsWith('/nearby')) return 2;
     if (loc.startsWith('/mustvisit')) return 3;
     if (loc.startsWith('/favourites')) return 4;
-    return 0; // default = Places
+    return 0;
   }
 
   @override
   Widget build(BuildContext context) {
     final idx = _indexFromLocation(context);
-
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
@@ -49,7 +48,7 @@ class _ScaffoldWithTabs extends StatelessWidget {
             NavigationDestination(
               icon: Icon(t.icon),
               label: t.label,
-              tooltip: '', // <--- removes hover popup
+              tooltip: '', // disable hover tooltips
             ),
         ],
       ),
@@ -71,12 +70,10 @@ final router = GoRouter(
       path: '/splash',
       builder: (context, state) => const SplashScreen(),
     ),
-
-    // Shell with bottom nav
     ShellRoute(
       builder: (context, state, child) => _ScaffoldWithTabs(child: child),
       routes: [
-        /// PLACES (dashboard)
+        // PLACES + nested region + place details
         GoRoute(
           path: '/places',
           pageBuilder: (context, state) =>
@@ -102,28 +99,37 @@ final router = GoRouter(
           ],
         ),
 
-        /// CATEGORIES
+        // CATEGORIES + category places
         GoRoute(
           path: '/categories',
           pageBuilder: (context, state) =>
           const NoTransitionPage(child: CategoriesScreen()),
+          routes: [
+            GoRoute(
+              path: ':categoryId',
+              builder: (context, state) {
+                final id = state.pathParameters['categoryId']!;
+                return CategoryPlacesScreen(categoryId: id);
+              },
+            ),
+          ],
         ),
 
-        /// NEARBY (map)
+        // NEARBY
         GoRoute(
           path: '/nearby',
           pageBuilder: (context, state) =>
           const NoTransitionPage(child: MapScreen()),
         ),
 
-        /// MUST VISIT
+        // MUST VISIT
         GoRoute(
           path: '/mustvisit',
           pageBuilder: (context, state) =>
           const NoTransitionPage(child: MustVisitScreen()),
         ),
 
-        /// FAVOURITES
+        // FAVOURITES
         GoRoute(
           path: '/favourites',
           pageBuilder: (context, state) =>

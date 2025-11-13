@@ -1,30 +1,440 @@
 import 'place.dart';
 
-/// This is your "database" of all places.
+/// Master list of all places in the app.
 final List<Place> allPlaces = [
+  // ========= KARAKALPAKSTAN =========
   Place(
-    id: 'registan',
-    name: 'Registan Square',
-    city: 'Samarkand',
-    country: 'Uzbekistan',
-    regionId: 'samarkand',
+    id: 'nukus_museum',
+    name: 'Nukus Art Museum (Savitsky)',
+    city: 'Nukus',
+    regionId: 'karakalpakstan',
     description:
-    'Registan is the historic heart of Samarkand, framed by three majestic madrasahs... '
-        'You can write 2–3 paragraphs here about history, architecture, and why it is special.',
-    rating: 4.9,
-    imageUrl: 'assets/places/samarkand/registan_1.jpg',
-    lat: 39.6542,
-    lng: 66.9750,
-    visitingHours: 'Daily, 09:00 – 18:00',
-    ticketInfo: 'Approx. 50,000 UZS for adults, discounts for students.',
-    bestSeason: 'Spring and Autumn',
-    tips: 'Best light is around sunset. Dress modestly; respect local customs.',
+    'Modern art and Karakalpak culture in one museum, sometimes called the “Louvre in the desert”.',
+    category: 'Museums',
+    imageUrl: 'assets/places/karakalpakstan/nukus_museum_1.jpg',
+    rating: 4.8,
+    latitude: 42.4603,
+    longitude: 59.6180,
+    visitingHours: 'Daily 9:00–18:00 (check locally on Mondays)',
+    ticketInfo: 'Paid entrance, small extra fee for photos.',
+    bestSeason: 'Spring and autumn',
+    tips: 'Plan at least 2 hours; focus on avant-garde and folk art halls.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'moynaq_ship_graveyard',
+    name: 'Moynaq Ship Graveyard',
+    city: 'Moynaq',
+    regionId: 'karakalpakstan',
+    description:
+    'Rusting fishing ships standing in the desert where the Aral Sea used to be.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/karakalpakstan/moynaq_1.jpg',
+    rating: 4.7,
+    latitude: 43.9819,
+    longitude: 59.1751,
+    visitingHours: 'Open area – accessible all day.',
+    ticketInfo: 'Usually free; small fee for local museum.',
+    bestSeason: 'Spring or autumn (summer is very hot).',
+    tips: 'Take water, scarf and jacket; it can be windy and dusty.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'mizdakhkan_necropolis',
+    name: 'Mizdakhkan Necropolis',
+    city: 'Khodjeyli',
+    regionId: 'karakalpakstan',
+    description:
+    'Ancient cemetery and ruins on a hill with wide views and many local legends.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/karakalpakstan/mizdakhkan_1.jpg',
+    rating: 4.5,
+    visitingHours: 'Daytime recommended.',
+    ticketInfo: 'Usually free; sometimes a small donation.',
+    bestSeason: 'Spring and autumn',
+    tips: 'Respect graves and customs; wear comfortable shoes.',
   ),
 
-  // Add more places here:
-  // - Gur-Emir Mausoleum (Samarkand)
-  // - Ark Fortress (Bukhara)
-  // - Kalon Minaret
-  // - Itchan Kala (Khiva / Karakalpakstan area)
-  // etc.
+  // ========= BUKHARA =========
+  Place(
+    id: 'ark_fortress',
+    name: 'Ark Fortress',
+    city: 'Bukhara',
+    regionId: 'bukhara',
+    description:
+    'Royal citadel of Bukhara with museums, courtyards and a good view over the old town.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/bukhara/ark_fortress_1.jpg',
+    rating: 4.7,
+    latitude: 39.7779,
+    longitude: 64.4111,
+    visitingHours: 'Daily 9:00–18:00 (hours may change)',
+    ticketInfo: 'Entrance ticket; extra fee for some museum rooms.',
+    bestSeason: 'Spring and autumn evenings.',
+    tips: 'Come near sunset for warm light on the walls.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'poi_kalon_complex',
+    name: 'Poi Kalon Complex',
+    city: 'Bukhara',
+    regionId: 'bukhara',
+    description:
+    'Ensemble around the Kalon minaret with mosque and madrasah, symbol of Bukhara.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/bukhara/poi_kalon_1.jpg',
+    rating: 4.9,
+    visitingHours: 'Mosque usually 9:00–19:00, prayer times respected.',
+    ticketInfo: 'Small entrance fee for the mosque courtyard.',
+    bestSeason: 'Any season; evenings are very atmospheric.',
+    tips: 'Look closely at the brick patterns on the minaret.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'lyabi_hauz',
+    name: 'Lyabi Hauz Ensemble',
+    city: 'Bukhara',
+    regionId: 'bukhara',
+    description:
+    'Shady square with a pool, teahouses and restaurants in the old town.',
+    category: 'Parks',
+    imageUrl: 'assets/places/bukhara/lyabi_hauz_1.jpg',
+    rating: 4.6,
+    visitingHours: 'Open all day.',
+    ticketInfo: 'Free; pay only for cafés and restaurants.',
+    bestSeason: 'Warm evenings.',
+    tips: 'Sit by the water with tea and watch local life.',
+  ),
+
+  // ========= SAMARKAND =========
+  Place(
+    id: 'registan_square',
+    name: 'Registan Square',
+    city: 'Samarkand',
+    regionId: 'samarkand',
+    description:
+    'Main square of Samarkand with three huge tiled madrasahs – symbol of Uzbekistan.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/samarkand/registan_1.jpg',
+    rating: 5.0,
+    latitude: 39.6548,
+    longitude: 66.9760,
+    visitingHours: 'Roughly 8:00–19:00; extra tickets for night show.',
+    ticketInfo: 'Entrance ticket; separate ticket for light show.',
+    bestSeason: 'Spring and autumn; evenings for lighting.',
+    tips: 'Come early morning or late evening to avoid crowds.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'gur_e_amir',
+    name: 'Gur-e Amir Mausoleum',
+    city: 'Samarkand',
+    regionId: 'samarkand',
+    description:
+    'Resting place of Timur (Tamerlane) with beautiful blue dome and quiet courtyard.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/samarkand/gur_amir_1.jpg',
+    rating: 4.8,
+    visitingHours: 'Daily 9:00–19:00 (longer in summer).',
+    ticketInfo: 'Entrance ticket.',
+    bestSeason: 'Any season; night lighting is lovely.',
+    tips: 'Look up inside the dome at the gold decorations.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'shah_i_zinda',
+    name: 'Shah-i-Zinda Necropolis',
+    city: 'Samarkand',
+    regionId: 'samarkand',
+    description:
+    'Lane of mausoleums with bright turquoise tiles, one of the most photogenic places in the country.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/samarkand/shah_i_zinda_1.jpg',
+    rating: 4.9,
+    visitingHours: 'Daily; mornings are quietest.',
+    ticketInfo: 'Entrance ticket at the gate.',
+    bestSeason: 'Spring and autumn; avoid midday heat.',
+    tips: 'Dress modestly and respect worshippers.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'bibi_khanym_mosque',
+    name: 'Bibi-Khanym Mosque',
+    city: 'Samarkand',
+    regionId: 'samarkand',
+    description:
+    'Huge historic mosque near Siyob bazaar, once one of the largest in the region.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/samarkand/bibi_khanym_1.jpg',
+    rating: 4.6,
+    visitingHours: 'Daily during daylight.',
+    ticketInfo: 'Entrance ticket.',
+    bestSeason: 'Any; combine with a bazaar visit.',
+    tips: 'Walk around the courtyard to see restoration details.',
+  ),
+
+  // ========= KHOREZM (KHIVA) =========
+  Place(
+    id: 'itachan_kala',
+    name: 'Itchan Kala Old Town',
+    city: 'Khiva',
+    regionId: 'khorezm',
+    description:
+    'Walled inner city of Khiva with mud-brick walls, minarets and narrow streets (UNESCO site).',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/khorezm/itachan_kala_1.jpg',
+    rating: 4.9,
+    visitingHours: 'Tickets usually valid for the whole day.',
+    ticketInfo: 'Combined ticket for main monuments; extra fee for some towers.',
+    bestSeason: 'Spring and autumn; summer is very hot.',
+    tips: 'Climb a tower or viewpoint for sunset over the old city.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'kalta_minor',
+    name: 'Kalta Minor Minaret',
+    city: 'Khiva',
+    regionId: 'khorezm',
+    description:
+    'Short but massive turquoise minaret at the entrance of the old town.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/khorezm/kalta_minor_1.jpg',
+    rating: 4.7,
+    visitingHours: 'Viewable all day from outside.',
+    ticketInfo: 'Included in Itchan Kala complex ticket.',
+    bestSeason: 'Any; colours look great in sun.',
+    tips: 'Good landmark to orient yourself inside the walls.',
+  ),
+
+  // ========= TASHKENT CITY =========
+  Place(
+    id: 'amir_timur_square',
+    name: 'Amir Timur Square',
+    city: 'Tashkent',
+    regionId: 'tashkent-city',
+    description:
+    'Central square with statue of Amir Timur, surrounded by gardens and modern buildings.',
+    category: 'Parks',
+    imageUrl: 'assets/places/tashkent_city/amir_timur_square_1.jpg',
+    rating: 4.4,
+    visitingHours: 'Open all day.',
+    ticketInfo: 'Free.',
+    bestSeason: 'Spring and summer evenings.',
+    tips: 'Nice short walk before or after dinner.',
+  ),
+  Place(
+    id: 'chorsu_bazaar',
+    name: 'Chorsu Bazaar',
+    city: 'Tashkent',
+    regionId: 'tashkent-city',
+    description:
+    'Large domed market with fruit, spices, bread and many local products.',
+    category: 'Local Markets',
+    imageUrl: 'assets/places/tashkent_city/chorsu_bazaar_1.jpg',
+    rating: 4.6,
+    visitingHours: 'About 8:00–18:00, busiest in the morning.',
+    ticketInfo: 'Free entry; pay for what you buy.',
+    bestSeason: 'Any; mornings are most lively.',
+    tips: 'Try fresh non bread and dried fruits.',
+    isMustVisit: true,
+  ),
+  Place(
+    id: 'navoi_theatre',
+    name: 'Navoi Opera & Ballet Theatre',
+    city: 'Tashkent',
+    regionId: 'tashkent-city',
+    description:
+    'Elegant theatre that hosts opera, ballet and classical music at good prices.',
+    category: 'Theatres',
+    imageUrl: 'assets/places/tashkent_city/navoi_theatre_1.jpg',
+    rating: 4.7,
+    visitingHours: 'Shows mainly in the evening; ticket office during the day.',
+    ticketInfo: 'Tickets usually inexpensive.',
+    bestSeason: 'Any; nice evening activity.',
+    tips: 'Arrive 20–30 minutes early to enjoy the building.',
+  ),
+
+  // ========= TASHKENT REGION =========
+  Place(
+    id: 'charvak_reservoir',
+    name: 'Charvak Reservoir',
+    city: 'Charvak area',
+    regionId: 'tashkent-region',
+    description:
+    'Mountain lake popular for weekend trips, beaches and small resorts.',
+    category: 'Parks',
+    imageUrl: 'assets/places/tashkent_region/charvak_1.jpg',
+    rating: 4.5,
+    visitingHours: 'Daytime; some resorts open overnight.',
+    ticketInfo: 'Free lakeshore; pay inside resorts.',
+    bestSeason: 'Late spring to early autumn.',
+    tips: 'Day trip from Tashkent; bring swimwear and sunscreen.',
+  ),
+  Place(
+    id: 'chimgan_mountains',
+    name: 'Chimgan Mountains',
+    city: 'Chimgan',
+    regionId: 'tashkent-region',
+    description:
+    'Green mountains north of Tashkent with hiking in summer and skiing in winter.',
+    category: 'Parks',
+    imageUrl: 'assets/places/tashkent_region/chimgan_1.jpg',
+    rating: 4.7,
+    visitingHours: 'Daylight; lifts have their own schedule.',
+    ticketInfo: 'Pay only for transport and lifts.',
+    bestSeason: 'Spring, summer and early autumn; winter for skiing.',
+    tips: 'Wear proper shoes; weather can change quickly.',
+    isMustVisit: true,
+  ),
+
+  // ========= FERGAN A =========
+  Place(
+    id: 'khudayar_khan_palace',
+    name: 'Khudayar Khan Palace',
+    city: 'Kokand',
+    regionId: 'fergana',
+    description:
+    'Colourful 19th-century palace with tiled façade and museum rooms.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/fergana/khudayar_palace_1.jpg',
+    rating: 4.5,
+    visitingHours: 'Daily 9:00–18:00 (check locally).',
+    ticketInfo: 'Entrance ticket for museum.',
+    bestSeason: 'Spring and autumn.',
+    tips: 'Notice the wooden ceilings and carved doors.',
+  ),
+  Place(
+    id: 'yodgorlik_silk_factory',
+    name: 'Yodgorlik Silk Factory',
+    city: 'Margilan',
+    regionId: 'fergana',
+    description:
+    'Working silk factory where you can see traditional ikat weaving and dyeing.',
+    category: 'Museums',
+    imageUrl: 'assets/places/fergana/yodgorlik_silk_1.jpg',
+    rating: 4.6,
+    visitingHours: 'Weekdays during working hours.',
+    ticketInfo: 'Small fee for guided tour.',
+    bestSeason: 'Any weekday.',
+    tips: 'Ask to see the full process from cocoons to fabric.',
+  ),
+
+  // ========= ANDIJAN =========
+  Place(
+    id: 'bobur_memorial_park',
+    name: 'Bobur Memorial Park',
+    city: 'Andijan',
+    regionId: 'andijan',
+    description:
+    'Park and memorial complex dedicated to Zahiriddin Bobur, founder of the Mughal Empire.',
+    category: 'Parks',
+    imageUrl: 'assets/places/andijan/bobur_park_1.jpg',
+    rating: 4.4,
+    visitingHours: 'Daytime.',
+    ticketInfo: 'Usually free; some museum rooms may charge.',
+    bestSeason: 'Spring and summer.',
+    tips: 'Nice green area to relax and learn about Bobur.',
+  ),
+
+  // ========= NAMANGAN =========
+  Place(
+    id: 'namangan_flower_garden',
+    name: 'Namangan Flower Gardens',
+    city: 'Namangan',
+    regionId: 'namangan',
+    description:
+    'City parks known for flower displays, especially during spring festivals.',
+    category: 'Parks',
+    imageUrl: 'assets/places/namangan/flower_garden_1.jpg',
+    rating: 4.3,
+    visitingHours: 'Open all day.',
+    ticketInfo: 'Free.',
+    bestSeason: 'Spring when flowers are in bloom.',
+    tips: 'Good for families and evening walks.',
+  ),
+
+  // ========= KASHKADARYA =========
+  Place(
+    id: 'ak_saray_palace',
+    name: 'Ak-Saray Palace Ruins',
+    city: 'Shahrisabz',
+    regionId: 'kashkadarya',
+    description:
+    'Remains of Timur’s huge palace gate which hints at the size of the old complex.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/kashkadarya/ak_saray_1.jpg',
+    rating: 4.4,
+    visitingHours: 'Daytime.',
+    ticketInfo: 'Small entrance fee for park area.',
+    bestSeason: 'Spring and autumn.',
+    tips: 'Combine with other Shahrisabz monuments from Samarkand.',
+  ),
+
+  // ========= SURXONDARYO =========
+  Place(
+    id: 'termez_archaeology_museum',
+    name: 'Termez Archaeology Museum',
+    city: 'Termez',
+    regionId: 'surxondaryo',
+    description:
+    'Modern museum showing Buddhist, Hellenistic and Islamic history of the region.',
+    category: 'Museums',
+    imageUrl: 'assets/places/surxondaryo/termez_museum_1.jpg',
+    rating: 4.5,
+    visitingHours: 'Daily except Monday, roughly 9:00–17:00.',
+    ticketInfo: 'Entrance ticket.',
+    bestSeason: 'Any.',
+    tips: 'Good start before visiting nearby ruins like Fayoztepa.',
+  ),
+
+  // ========= NAVOI =========
+  Place(
+    id: 'sarmyshsay_gorge',
+    name: 'Sarmyshsay Gorge Petroglyphs',
+    city: 'near Navoi',
+    regionId: 'navoi',
+    description:
+    'Gorge with thousands of ancient rock carvings of animals and hunting scenes.',
+    category: 'Historical Sites',
+    imageUrl: 'assets/places/navoi/sarmyshsay_1.jpg',
+    rating: 4.3,
+    visitingHours: 'Daytime only.',
+    ticketInfo: 'May require small fee or local guide.',
+    bestSeason: 'Spring and autumn.',
+    tips: 'Wear sturdy shoes and bring water.',
+  ),
+
+  // ========= JIZZAKH =========
+  Place(
+    id: 'zaamin_national_park',
+    name: 'Zaamin National Park',
+    city: 'Zaamin area',
+    regionId: 'jizzakh',
+    description:
+    'Mountain national park with forests, fresh air and simple guesthouses.',
+    category: 'Parks',
+    imageUrl: 'assets/places/jizzakh/zaamin_1.jpg',
+    rating: 4.6,
+    visitingHours: 'Daylight; some areas may need permits.',
+    ticketInfo: 'Park entrance fee at the gate.',
+    bestSeason: 'Late spring to early autumn.',
+    tips: 'Great for hiking and picnics; nights can be cold.',
+  ),
+
+  // ========= SIRDARYO =========
+  Place(
+    id: 'aydar_lake',
+    name: 'Aydar Lake',
+    city: 'Sirdaryo region',
+    regionId: 'sirdaryo',
+    description:
+    'Large artificial lake popular for fishing, bird-watching and quiet nature stays.',
+    category: 'Parks',
+    imageUrl: 'assets/places/sirdaryo/aydar_lake_1.jpg',
+    rating: 4.2,
+    visitingHours: 'Daytime; some yurt camps overnight.',
+    ticketInfo: 'Free shore access; pay for camps and tours.',
+    bestSeason: 'Spring and autumn.',
+    tips: 'Good for people who enjoy remote nature and birds.',
+  ),
 ];

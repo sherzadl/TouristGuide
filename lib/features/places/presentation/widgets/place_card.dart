@@ -17,7 +17,6 @@ class PlaceCard extends StatelessWidget {
   });
 
   Widget _buildImage() {
-    // If image is a local asset
     if (place.imageUrl.startsWith('assets/')) {
       return Image.asset(
         place.imageUrl,
@@ -25,7 +24,6 @@ class PlaceCard extends StatelessWidget {
       );
     }
 
-    // If image is from the network
     return CachedNetworkImage(
       imageUrl: place.imageUrl,
       fit: BoxFit.cover,
@@ -57,7 +55,6 @@ class PlaceCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(16),
@@ -70,21 +67,20 @@ class PlaceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-
-            // Text + location + rating
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title + heart
                     Row(
                       children: [
                         Expanded(
                           child: Text(
                             place.name,
-                            style: t.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                            style: t.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -119,10 +115,7 @@ class PlaceCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.star, color: Colors.amber, size: 18),
                         const SizedBox(width: 4),
-                        Text(
-                          place.rating.toStringAsFixed(1),
-                          style: t.bodyMedium,
-                        ),
+                        Text(place.rating.toStringAsFixed(1)),
                       ],
                     ),
                   ],

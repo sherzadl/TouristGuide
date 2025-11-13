@@ -1,7 +1,7 @@
 class Region {
-  final String id;     // e.g. 'samarkand'
-  final String name;   // e.g. 'Samarkand'
-  final String? image; // e.g. 'assets/regions/samarkand_cover.jpg'
+  final String id;
+  final String name;
+  final String? image; // asset path for cover image
 
   const Region({
     required this.id,
@@ -10,11 +10,13 @@ class Region {
   });
 }
 
-const regions = <Region>[
+/// All regions of Uzbekistan used in the app.
+/// Karakalpakstan first.
+const List<Region> regions = [
   Region(
-    id: 'samarkand',
-    name: 'Samarkand',
-    image: 'assets/regions/samarkand_cover.jpg',
+    id: 'karakalpakstan',
+    name: 'Karakalpakstan',
+    image: 'assets/regions/karakalpakstan_cover.png',
   ),
   Region(
     id: 'bukhara',
@@ -22,12 +24,52 @@ const regions = <Region>[
     image: 'assets/regions/bukhara_cover.jpg',
   ),
   Region(
-    id: 'karakalpakstan',
-    name: 'Karakalpakstan',
-    image: 'assets/regions/karakalpakstan_cover.jpg',
+    id: 'samarkand',
+    name: 'Samarkand',
+    image: 'assets/regions/samarkand_cover.jpg',
   ),
-
-  // you can add more regions:
-  // Region(id: 'tashkent', name: 'Tashkent', image: 'assets/regions/tashkent_cover.jpg'),
-  // Region(id: 'khorezm', name: 'Khorezm', image: 'assets/regions/khorezm_cover.jpg'),
+  Region(
+    id: 'khorezm',
+    name: 'Khorezm (Khiva)',
+  ),
+  Region(
+    id: 'tashkent-city',
+    name: 'Tashkent City',
+  ),
+  Region(
+    id: 'tashkent-region',
+    name: 'Tashkent Region',
+  ),
+  Region(
+    id: 'fergana',
+    name: 'Fergana',
+  ),
+  Region(
+    id: 'andijan',
+    name: 'Andijan',
+  ),
+  Region(
+    id: 'namangan',
+    name: 'Namangan',
+  ),
+  Region(
+    id: 'kashkadarya',
+    name: 'Kashkadarya',
+  ),
+  Region(
+    id: 'navoi',
+    name: 'Navoi',
+  ),
+  Region(
+    id: 'jizzakh',
+    name: 'Jizzakh',
+  ),
+  Region(
+    id: 'sirdaryo',
+    name: 'Sirdaryo',
+  ),
+  Region(
+    id: 'surxondaryo',
+    name: 'Surxondaryo',
+  ),
 ];

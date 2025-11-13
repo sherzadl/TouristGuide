@@ -1,18 +1,22 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import '../../../shared/providers.dart';
-import '../data/place_repository.dart';
+import '../data/place.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
+
   @override
   ConsumerState<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends ConsumerState<MapScreen> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller =
+  Completer<GoogleMapController>();
   final Set<Marker> _markers = <Marker>{};
 
   static const _uzbekistan = CameraPosition(
@@ -27,22 +31,25 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   }
 
   Future<void> _loadMarkers() async {
-    final PlaceRepository repo = ref.read(placeRepositoryProvider);
+    final repo = ref.read(placeRepositoryProvider);
     final places = await repo.getPopularPlaces();
 
     final markers = places
-        .where((p) => p.lat != null && p.lng != null)
-        .map((p) => Marker(
-      markerId: MarkerId(p.id),
-      position: LatLng(p.lat!, p.lng!),
-      infoWindow: InfoWindow(
-        title: p.name,
-        snippet: '${p.city}, ${p.country}',
+        .where((p) => p.latitude != null && p.longitude != null)
+        .map(
+          (p) => Marker(
+        markerId: MarkerId(p.id),
+        position: LatLng(p.latitude!, p.longitude!),
+        infoWindow: InfoWindow(
+          title: p.name,
+          snippet: '${p.city}, ${p.country}',
+        ),
       ),
-    ))
+    )
         .toSet();
 
     if (!mounted) return;
+
     setState(() {
       _markers
         ..clear()
@@ -76,15 +83,13 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             markers: _markers,
             onMapCreated: (c) => _controller.complete(c),
             mapToolbarEnabled: true,
-            zoomControlsEnabled: false, // we provide our own nice buttons
+            zoomControlsEnabled: false,
             zoomGesturesEnabled: true,
             tiltGesturesEnabled: true,
             rotateGesturesEnabled: true,
             myLocationButtonEnabled: false,
             myLocationEnabled: false,
           ),
-
-          // Floating zoom & recenter controls
           Positioned(
             right: 12,
             bottom: 16,
@@ -94,7 +99,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                 const SizedBox(height: 10),
                 _RoundButton(icon: Icons.remove, onPressed: _zoomOut),
                 const SizedBox(height: 10),
-                _RoundButton(icon: Icons.explore, onPressed: _recenterUzbekistan),
+                _RoundButton(
+                    icon: Icons.explore, onPressed: _recenterUzbekistan),
               ],
             ),
           ),
@@ -107,7 +113,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 class _RoundButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
-  const _RoundButton({required this.icon, required this.onPressed, super.key});
+
+  const _RoundButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
