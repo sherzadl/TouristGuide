@@ -3,12 +3,18 @@ class Place {
   final String name;
   final String city;
   final String country;
-  final String description;
+  final String description; // can be long text
   final double rating;
-  final String imageUrl;
+  final String imageUrl; // can be asset path like 'assets/places/...'
   final double? lat;
   final double? lng;
   final String regionId;
+
+  // extra optional fields for detailed info
+  final String? visitingHours;
+  final String? ticketInfo;
+  final String? bestSeason;
+  final String? tips;
 
   const Place({
     required this.id,
@@ -21,5 +27,9 @@ class Place {
     this.lat,
     this.lng,
     required this.regionId,
+    this.visitingHours,
+    this.ticketInfo,
+    this.bestSeason,
+    this.tips,
   });
 }

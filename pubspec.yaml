@@ -34,6 +34,9 @@ flutter:
   assets:
     - assets/branding/logo_1024.png
     - assets/svg/logo.svg
+    - assets/regions/
+    - assets/places/
+
 
 # Native splash screen
 flutter_native_splash:

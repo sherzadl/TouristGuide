@@ -17,8 +17,10 @@ class RegionsDashboardScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Explore cities, cultures, and stories',
-                style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
+            child: Text(
+              'Explore cities, cultures, and stories',
+              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -31,7 +33,7 @@ class RegionsDashboardScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               readOnly: true,
-              onTap: () => context.go('/places'), // later to search page
+              onTap: () => context.go('/places'),
               decoration: InputDecoration(
                 hintText: 'Search cities, places…',
                 prefixIcon: const Icon(Icons.search),
@@ -47,11 +49,12 @@ class RegionsDashboardScreen extends StatelessWidget {
           ),
           const SizedBox(height: 14),
 
-          // “Popular Destinations” title + quote
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Popular Destinations',
-                style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
+            child: Text(
+              'Popular Destinations',
+              style: t.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -61,7 +64,6 @@ class RegionsDashboardScreen extends StatelessWidget {
             ),
           ),
 
-          // VERTICAL list of regions (stacked)
           const SizedBox(height: 6),
           for (final r in regions) _RegionTile(region: r),
           const SizedBox(height: 20),
@@ -75,37 +77,67 @@ class _RegionTile extends StatelessWidget {
   final Region region;
   const _RegionTile({required this.region});
 
+  Widget _buildBackgroundImage() {
+    final img = region.image;
+
+    // If no image specified → fallback
+    if (img == null || img.isEmpty) {
+      return Container(
+        color: Colors.grey.shade300,
+        child: const Center(
+          child: Icon(Icons.landscape_outlined, size: 40, color: Colors.black45),
+        ),
+      );
+    }
+
+    // If it's an asset path
+    if (img.startsWith('assets/')) {
+      return Image.asset(
+        img,
+        height: 200,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
+
+    // Otherwise treat as network URL
+    return CachedNetworkImage(
+      imageUrl: img,
+      height: 200,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      placeholder: (_, __) => const SizedBox(
+        height: 200,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      errorWidget: (_, __, ___) => Container(
+        height: 200,
+        color: Colors.black12,
+        alignment: Alignment.center,
+        child: const Icon(Icons.image_not_supported_outlined),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final img = region.image ?? 'https://picsum.photos/seed/${region.id}/1200/800';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () => context.go('/places/region/${region.id}'),
+        borderRadius: BorderRadius.circular(18),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18),
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
-              CachedNetworkImage(
-                imageUrl: img,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (_, __) => const SizedBox(
-                    height: 200, child: Center(child: CircularProgressIndicator())),
-                errorWidget: (_, __, ___) => Container(
-                  height: 200,
-                  color: Colors.black12,
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.image_not_supported_outlined),
-                ),
-              ),
+              _buildBackgroundImage(),
               Container(
                 height: 200,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.bottomCenter, end: Alignment.center,
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
                     colors: [Colors.black54, Colors.transparent],
                   ),
                 ),
@@ -124,7 +156,8 @@ class _RegionTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.white),
+                    const Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Colors.white),
                   ],
                 ),
               ),
