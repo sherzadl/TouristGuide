@@ -31,45 +31,56 @@ const List<Region> regions = [
   Region(
     id: 'khorezm',
     name: 'Khorezm (Khiva)',
+    image: 'assets/regions/khorezm_cover.jpg',
   ),
   Region(
     id: 'tashkent-city',
     name: 'Tashkent City',
+    image: 'assets/regions/tashkent_cover.jpg',
   ),
   Region(
     id: 'tashkent-region',
     name: 'Tashkent Region',
+    image: 'assets/regions/tashkentregion_cover.jpg',
   ),
   Region(
     id: 'fergana',
     name: 'Fergana',
+    image: 'assets/regions/fergana_cover.jpg',
   ),
   Region(
     id: 'andijan',
     name: 'Andijan',
+    image: 'assets/regions/andijan_cover.jpg',
   ),
   Region(
     id: 'namangan',
     name: 'Namangan',
+    image: 'assets/regions/namangan_cover.jpg',
   ),
   Region(
     id: 'kashkadarya',
     name: 'Kashkadarya',
+    image: 'assets/regions/kashkadaryda_cover.jpg',
   ),
   Region(
     id: 'navoi',
     name: 'Navoi',
+    image: 'assets/regions/navoi_cover.jpg',
   ),
   Region(
     id: 'jizzakh',
     name: 'Jizzakh',
+    image: 'assets/regions/jizzakh_cover.jpg',
   ),
   Region(
     id: 'sirdaryo',
     name: 'Sirdaryo',
+    image: 'assets/regions/sirdaryo_cover.jpg',
   ),
   Region(
     id: 'surxondaryo',
     name: 'Surxondaryo',
+    image: 'assets/regions/surxondaryo_cover.jpg',
   ),
 ];
