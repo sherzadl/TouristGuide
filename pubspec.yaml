@@ -36,6 +36,18 @@ flutter:
     - assets/svg/logo.svg
     - assets/regions/
     - assets/places/
+    - assets/places/karakalpakstan/
+    - assets/places/bukhara/
+    - assets/places/andijan/
+    - assets/places/fergana/
+    - assets/places/kashkadarya/
+    - assets/places/khorezm/
+    - assets/places/namangan/
+    - assets/places/navoi/
+    - assets/places/samarkand/
+    - assets/places/tashkent_city/
+    - assets/places/jizzakh/
+    - assets/places/sirdaryo/
 
 
 # Native splash screen

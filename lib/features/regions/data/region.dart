@@ -39,11 +39,6 @@ const List<Region> regions = [
     image: 'assets/regions/tashkent_cover.jpg',
   ),
   Region(
-    id: 'tashkent-region',
-    name: 'Tashkent Region',
-    image: 'assets/regions/tashkentregion_cover.jpg',
-  ),
-  Region(
     id: 'fergana',
     name: 'Fergana',
     image: 'assets/regions/fergana_cover.jpg',
@@ -61,7 +56,7 @@ const List<Region> regions = [
   Region(
     id: 'kashkadarya',
     name: 'Kashkadarya',
-    image: 'assets/regions/kashkadaryda_cover.jpg',
+    image: 'assets/regions/kashkadarya_cover.jpg',
   ),
   Region(
     id: 'navoi',
