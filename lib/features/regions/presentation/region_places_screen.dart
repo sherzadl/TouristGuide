@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 import '../data/region.dart';
 import '../../places/data/place.dart';
 import '../../places/data/mock_place_repository.dart';
@@ -15,14 +16,23 @@ class RegionPlacesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.watch(placeRepositoryProvider) as MockPlaceRepository;
     final favIds = ref.watch(favoritesProvider);
-    final regionName = regions.firstWhere((r) => r.id == regionId).name;
+
+    final regionName = regions
+        .firstWhere(
+          (r) => r.id == regionId,
+      orElse: () => const Region(id: 'unknown', name: 'Unknown Region'),
+    )
+        .name;
 
     return Scaffold(
       appBar: AppBar(title: Text(regionName)),
       body: FutureBuilder<List<Place>>(
         future: repo.getPlacesByRegion(regionId),
         builder: (context, snap) {
-          if (!snap.hasData) return const Center(child: CircularProgressIndicator());
+          if (!snap.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           final places = snap.data!;
           if (places.isEmpty) {
             return Center(
@@ -32,17 +42,23 @@ class RegionPlacesScreen extends ConsumerWidget {
               ),
             );
           }
+
           return ListView.separated(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             itemCount: places.length,
-            itemBuilder: (_, i) {
+            itemBuilder: (context, i) {
               final p = places[i];
               final isFav = favIds.contains(p.id);
+
               return PlaceCard(
                 place: p,
                 isFavorite: isFav,
-                onFavoriteToggle: () => ref.read(favoritesProvider.notifier).toggle(p.id),
-                onTap: () => context.go('/places/region/$regionId/place/${p.id}', extra: p),
+                onFavoriteToggle: () =>
+                    ref.read(favoritesProvider.notifier).toggle(p.id),
+                onTap: () => context.go(
+                  '/places/region/$regionId/place/${p.id}',
+                  extra: p,
+                ),
               );
             },
             separatorBuilder: (_, __) => const SizedBox(height: 8),

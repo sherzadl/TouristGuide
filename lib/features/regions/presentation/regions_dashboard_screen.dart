@@ -27,7 +27,6 @@ class RegionsDashboardScreen extends StatelessWidget {
     final t = Theme.of(context).textTheme;
 
     return Scaffold(
-      // background comes from global theme
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -99,8 +98,9 @@ class RegionsDashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // ---------- REGIONS LIST ----------
+            // ---------- REGIONS LIST (IMAGE ONLY) ----------
             for (final r in regions) _RegionTile(region: r),
+
             const SizedBox(height: 24),
           ],
         ),
@@ -130,16 +130,6 @@ class _RegionTile extends StatelessWidget {
       );
     }
 
-    if (img.startsWith('assets/')) {
-      return Image.asset(
-        img,
-        height: 200,
-        width: double.infinity,
-        fit: BoxFit.cover,
-      );
-    }
-
-    // Fallback – should not really happen now.
     return Image.asset(
       img,
       height: 200,
@@ -157,47 +147,7 @@ class _RegionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18),
-          child: Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              _buildBackgroundImage(),
-              Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black54,
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        region.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: _buildBackgroundImage(),
         ),
       ),
     );
