@@ -6,7 +6,7 @@ import '../data/region.dart';
 import '../../places/data/place.dart';
 import '../../places/data/mock_place_repository.dart';
 import '../../../shared/providers.dart';
-import '../../places/presentation/widgets/place_card.dart';
+import '../../places/presentation/widgets/place_big_card.dart';
 
 class RegionPlacesScreen extends ConsumerWidget {
   final String regionId;
@@ -29,11 +29,19 @@ class RegionPlacesScreen extends ConsumerWidget {
       body: FutureBuilder<List<Place>>(
         future: repo.getPlacesByRegion(regionId),
         builder: (context, snap) {
-          if (!snap.hasData) {
+          if (snap.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
           }
+          if (snap.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text('Failed to load places: ${snap.error}'),
+              ),
+            );
+          }
 
-          final places = snap.data!;
+          final places = snap.data ?? [];
           if (places.isEmpty) {
             return Center(
               child: Padding(
@@ -46,11 +54,12 @@ class RegionPlacesScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: places.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 8),
             itemBuilder: (context, i) {
               final p = places[i];
               final isFav = favIds.contains(p.id);
 
-              return PlaceCard(
+              return PlaceBigCard(
                 place: p,
                 isFavorite: isFav,
                 onFavoriteToggle: () =>
@@ -61,7 +70,6 @@ class RegionPlacesScreen extends ConsumerWidget {
                 ),
               );
             },
-            separatorBuilder: (_, __) => const SizedBox(height: 8),
           );
         },
       ),
