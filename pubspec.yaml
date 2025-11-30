@@ -8,6 +8,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  video_player: ^2.9.2
   flutter:
     sdk: flutter
 
@@ -48,6 +49,8 @@ flutter:
     - assets/places/tashkent_city/
     - assets/places/jizzakh/
     - assets/places/sirdaryo/
+    - assets/places/surxondaryo/
+    - assets/gifs/
 
 
 # Native splash screen

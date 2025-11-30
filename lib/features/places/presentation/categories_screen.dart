@@ -77,13 +77,13 @@ class CategoriesScreen extends StatelessWidget {
 class _Category {
   final String id;
   final String label;
-  final IconData icon;
+  final String gifAsset; // animated gif path
   final Color color;
 
   const _Category({
     required this.id,
     required this.label,
-    required this.icon,
+    required this.gifAsset,
     required this.color,
   });
 }
@@ -92,37 +92,37 @@ const _categories = <_Category>[
   _Category(
     id: 'historical',
     label: 'Historical Sites',
-    icon: Icons.account_balance_outlined,
+    gifAsset: 'assets/gifs/historical.gif',
     color: Color(0xFF2E86AB),
   ),
   _Category(
     id: 'museums',
     label: 'Museums',
-    icon: Icons.museum_outlined,
+    gifAsset: 'assets/gifs/museum.gif',
     color: Color(0xFF8E44AD),
   ),
   _Category(
     id: 'parks',
     label: 'Parks',
-    icon: Icons.park_outlined,
+    gifAsset: 'assets/gifs/parks.gif',
     color: Color(0xFF27AE60),
   ),
   _Category(
     id: 'mountains',
     label: 'Mountains',
-    icon: Icons.terrain_outlined,
+    gifAsset: 'assets/gifs/mountains.gif',
     color: Color(0xFF16A085),
   ),
   _Category(
     id: 'markets',
     label: 'Local Markets',
-    icon: Icons.storefront_outlined,
+    gifAsset: 'assets/gifs/localmarkets.gif',
     color: Color(0xFFC0392B),
   ),
   _Category(
     id: 'theatres',
     label: 'Theatres',
-    icon: Icons.theaters_outlined,
+    gifAsset: 'assets/gifs/theatre.gif',
     color: Color(0xFFD35400),
   ),
 ];
@@ -159,10 +159,11 @@ class _CategoryCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _BigAnimatedIcon(
-                icon: category.icon,
+              const SizedBox(height: 8),
+              _BigGifIcon(
+                gifPath: category.gifAsset,
                 color: category.color,
               ),
               const SizedBox(height: 10),
@@ -184,60 +185,36 @@ class _CategoryCard extends StatelessWidget {
   }
 }
 
-// ----------------- BIG ANIMATED ICON -----------------
+// ----------------- BIG GIF ICON (FULL CONTAINER) -----------------
 
-class _BigAnimatedIcon extends StatefulWidget {
-  final IconData icon;
+class _BigGifIcon extends StatelessWidget {
+  final String gifPath;
   final Color color;
 
-  const _BigAnimatedIcon({
-    required this.icon,
+  const _BigGifIcon({
+    required this.gifPath,
     required this.color,
   });
 
   @override
-  State<_BigAnimatedIcon> createState() => _BigAnimatedIconState();
-}
-
-class _BigAnimatedIconState extends State<_BigAnimatedIcon>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _scale = Tween<double>(begin: 0.9, end: 1.12)
-        .chain(CurveTween(curve: Curves.easeInOut))
-        .animate(_controller);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: _scale,
-      child: Container(
-        height: 90, // big circle
-        width: 90,
-        decoration: BoxDecoration(
-          color: widget.color.withOpacity(0.16),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          widget.icon,
-          size: 58, // big icon
-          color: widget.color,
+    return Container(
+      height: 100,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.10),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          gifPath,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => Icon(
+            Icons.category,
+            size: 54,
+            color: color.withOpacity(0.8),
+          ),
         ),
       ),
     );

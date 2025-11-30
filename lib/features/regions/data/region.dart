@@ -16,7 +16,7 @@ const List<Region> regions = [
   Region(
     id: 'karakalpakstan',
     name: 'Karakalpakstan',
-    image: 'assets/regions/karakalpakstan_cover.png',
+    image: 'assets/regions/karakalpakstan_cover.jpg',
   ),
   Region(
     id: 'bukhara',
