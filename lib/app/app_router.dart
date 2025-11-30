@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../shared/theme_provider.dart';
 
 import '../features/splash/presentation/splash_screen.dart';
 import '../features/regions/presentation/regions_dashboard_screen.dart';
@@ -14,7 +17,7 @@ import '../features/places/presentation/category_places_screen.dart';
 
 import '../features/places/data/place.dart';
 
-class _ScaffoldWithTabs extends StatelessWidget {
+class _ScaffoldWithTabs extends ConsumerWidget {
   final Widget child;
   const _ScaffoldWithTabs({required this.child});
 
@@ -36,10 +39,21 @@ class _ScaffoldWithTabs extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final idx = _indexFromLocation(context);
+
+    final mode = ref.watch(themeModeProvider);
+    final isDark = mode == ThemeMode.dark;
+
     return Scaffold(
       body: child,
+
+      // ✅ Global Light/Dark toggle visible on every tab
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => ref.read(themeModeProvider.notifier).toggle(),
+        child: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+      ),
+
       bottomNavigationBar: NavigationBar(
         selectedIndex: idx,
         onDestinationSelected: (i) => context.go(_tabs[i].route),
@@ -91,7 +105,10 @@ final router = GoRouter(
                   builder: (context, state) {
                     final id = state.pathParameters['id']!;
                     final place = state.extra as Place?;
-                    return PlaceDetailScreen(placeId: id, initialPlace: place);
+                    return PlaceDetailScreen(
+                      placeId: id,
+                      initialPlace: place,
+                    );
                   },
                 ),
               ],
