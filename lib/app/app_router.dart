@@ -46,12 +46,49 @@ class _ScaffoldWithTabs extends ConsumerWidget {
     final isDark = mode == ThemeMode.dark;
 
     return Scaffold(
-      body: child,
+      // ✅ Put child + top toggle in a Stack
+      body: Stack(
+        children: [
+          child,
 
-      // ✅ Global Light/Dark toggle visible on every tab
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(themeModeProvider.notifier).toggle(),
-        child: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+          // ✅ Small top-right toggle (global)
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 6, right: 8),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(999),
+                    onTap: () =>
+                        ref.read(themeModeProvider.notifier).toggle(),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surface
+                            .withOpacity(0.85),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 6,
+                            color: Colors.black.withOpacity(0.12),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        isDark ? Icons.light_mode : Icons.dark_mode,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
 
       bottomNavigationBar: NavigationBar(
@@ -62,13 +99,14 @@ class _ScaffoldWithTabs extends ConsumerWidget {
             NavigationDestination(
               icon: Icon(t.icon),
               label: t.label,
-              tooltip: '', // disable hover tooltips
+              tooltip: '',
             ),
         ],
       ),
     );
   }
 }
+
 
 class _Tab {
   final IconData icon;

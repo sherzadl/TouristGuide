@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(milliseconds: 2000), () {
+    Timer(const Duration(milliseconds: 2500), () {
       if (mounted) context.go('/places'); // go to Places tab (dashboard)
     });
   }
